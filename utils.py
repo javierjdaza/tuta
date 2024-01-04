@@ -27,7 +27,10 @@ def get_all_matches_by_team(busqueda, data_list):
     stats_df.sort_values(by = ['fecha_partido'], inplace=True)
     stats_df.reset_index(inplace=True, drop=True)
     stats_df.fillna(0,inplace=True)
-    stats_df.rename(columns = {'vs':'equipo_contrario','goles_vs':'goles_recibidos','goles':'goles_anotados'}, inplace = True)
+    try:
+        stats_df.rename(columns = {'vs':'equipo_contrario','goles_vs':'goles_recibidos','goles':'goles_anotados'}, inplace = True)
+    except:
+        pass
     try:
         stats_df['goles_esperados'] = stats_df['goles_esperados'].apply(lambda x: float(x))
     except:
@@ -35,7 +38,7 @@ def get_all_matches_by_team(busqueda, data_list):
     columns_to_int = ['remates_a_puerta', 'remates_fuera', 'remates_rechazados',
     'tiros_libres', 'corneres', 'fueras_de_juego', 'saques_de_banda',
     'paradas', 'faltas', 'tarjetas_amarillas', 'ataques',
-    'ataques_peligrosos', 'goles_anotados', 'tarjetas_rojas','remates','jornada','goles_recibidos']
+    'ataques_peligrosos', 'goles_anotados', 'tarjetas_rojas','remates','jornada','goles_recibidos','goles','goles_vs']
     for i in columns_to_int:
         try:
             stats_df[i] = stats_df[i].apply(lambda x: int(x))
@@ -64,7 +67,7 @@ def all_matches_plot(estadistico_a_mirar:str, equipo_1_df, equipo_2_df, equipo_1
     fig.add_hline(y=0,line_width=1,line_color="#414141",opacity = 0.8)
 
     fig.add_hline(y=y_l.mean(),line_width=1.5, layer='below',line_color="#414141",opacity=0.8,annotation_text=f"    ({round(y_l.mean(),2)})", annotation_position="right", line_dash="dot")
-    fig.add_hline(y=y_v.mean(),line_width=1.5, layer='below', line_color="#FF9800",opacity=0.8,annotation_text=f"    ({round(y_v.mean(),2)})", annotation_position="right", line_dash="dot")
+    fig.add_hline(y=y_v.mean(),line_width=1.5, layer='below', line_color="#FF9800",opacity=1,annotation_text=f"    ({round(y_v.mean(),2)})", annotation_position="right", line_dash="dot")
     fig.update_layout(barmode='group')
 
     fig.update_layout(
@@ -92,6 +95,7 @@ def all_matches_plot(estadistico_a_mirar:str, equipo_1_df, equipo_2_df, equipo_1
             orientation="h"
         ),
         margin=dict(r=50),
+        modebar_remove=['zoom', 'pan', 'select', 'zoomIn', 'zoomOut', 'autoScale', 'lasso2d'],
         barmode='group',
         bargap=0.3, # gap between bars of adjacent location coordinates.
         bargroupgap=0 # gap between bars of the same location coordinate.

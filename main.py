@@ -63,7 +63,7 @@ if menu_bar_selected == 'All Matches':
             if team_1_choosed and team_2_choosed: # si el equipo ya fue escogido
                 not_items_stats = ['equipo','fecha_partido','jornada','equipo_contrario','distancia_cubierta_(km)']
                 stats_items = sorted([i.title().replace('_',' ') for i in equipo_2_all_matches_df.columns if i not in not_items_stats])
-                stats_to_look = st.selectbox('Selecciona estadistico:',stats_items, key = 'stat', index=None, placeholder = 'stats...')
+                stats_to_look = st.selectbox('Selecciona estadistico:',stats_items, key = 'stat', index=None, placeholder = 'Estadisticos...')
                 st.write('---')
                 # n_jornadas = st.slider('Numero Partidos', min_value = 1, max_value = equipo_1_all_matches_df['jornada'].max(),value = equipo_1_all_matches_df['jornada'].max())
                 # n_jornadas = st.number_input('Insert a number',min_value = 1, max_value = equipo_1_all_matches_df['jornada'].max(),value = equipo_1_all_matches_df['jornada'].max(), step=4)

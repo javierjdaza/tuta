@@ -1,3 +1,5 @@
+
+
 premier = 'https://www.flashscore.co/futbol/inglaterra/premier-league/resultados/'
 ligue_1 = 'https://www.flashscore.co/futbol/francia/ligue-1/resultados/'
 serie_a = 'https://www.flashscore.co/futbol/italia/serie-a/resultados/'
@@ -25,33 +27,37 @@ ucrania = 'https://www.flashscore.co/futbol/ucrania/premier-league/resultados/'
 belgica = 'https://www.flashscore.co/futbol/belgica/jupiler-pro-league/resultados/'
 bosnia = 'https://www.flashscore.co/futbol/bosnia-y-herzegovina/premijer-liga-bih/resultados/'
 brazil = 'https://www.flashscore.co/futbol/brasil/brasileirao-serie-a/resultados/'
+marruecos = 'https://www.flashscore.co/futbol/marruecos/botola-gnfe1/resultados/'
 
 dict_ligas = {
-    'inglaterra' : premier,
-    'francia' : ligue_1,
-    'italia' : serie_a,
-    'españa' : la_liga,
-    'alemania' : bundes,
-    'austria' : austria,
-    'bulgaria' : bulgaria,
-    'chipre' : chipre,
-    'croacia' : croacia,
-    'dinamarca' : dinamarca,
-    'escocia' : escocia,
-    'gales' : gales,
-    'grecia' : grecia,
-    'hungria' : hungria,
-    'noruega' : noruega,
-    'israel' : israel,
-    'holanda' : holanda,
-    'polonia' : polonia,
-    'portugal' : portugal,
-    'r_checa' : r_checa,
-    'serbia' : serbia,
-    'suiza' : suiza,
-    'turquia' : turquia,
-    'ucrania' : ucrania,
-    'belgica' : belgica,
-    'bosnia' : bosnia,
-    'brazil' : brazil,
+    # 'inglaterra' : premier,
+    # 'francia' : ligue_1,
+    # 'italia' : serie_a,
+    # 'españa' : la_liga,
+    # 'alemania' : bundes,
+    # 'austria' : austria,
+    # 'bulgaria' : bulgaria,
+    # 'chipre' : chipre,
+    # 'croacia' : croacia,
+    # 'dinamarca' : dinamarca,
+    # 'escocia' : escocia,
+    # 'gales' : gales,
+    # 'grecia' : grecia,
+    # 'hungria' : hungria,
+    # 'noruega' : noruega,
+    # 'israel' : israel,
+    # 'holanda' : holanda,
+    # 'polonia' : polonia,
+    # 'portugal' : portugal,
+    # 'r_checa' : r_checa,
+    # 'serbia' : serbia,
+    # 'suiza' : suiza,
+    # 'turquia' : turquia,
+    # 'ucrania' : ucrania,
+    # 'belgica' : belgica,
+    # 'bosnia' : bosnia,
+    # 'brazil' : brazil,
+    'marruecos': marruecos,
     }
+
+efra = 'x'
