@@ -114,3 +114,63 @@ def all_matches_plot(estadistico_a_mirar:str, equipo_1_df, equipo_2_df, equipo_1
     )
     # fig.show()
     return fig
+
+def h2h_plot(equipo_local, equipo_visitante, equipo_local_df,equipo_visitante_df, estadistico_a_mirar):
+    # --- Local ---
+    y_l = equipo_local_df[estadistico_a_mirar]
+    x_l = [i.split('_')[0].title() for i in equipo_local_df['equipo']]
+    # --- Visitante ---
+    y_v = equipo_visitante_df[estadistico_a_mirar]
+    x_v = [i.split('_')[0].title() for i in equipo_visitante_df['equipo']]
+
+    fig = go.Figure(data=[
+        go.Bar(name=equipo_local.title(), x=x_l, y=y_l,marker_color = ['#414141'] * len(x_l)),
+        go.Bar(name=equipo_visitante.title(), x=x_v, y=y_v,marker_color = ['#FF9800'] * len(x_l)),
+        
+    ])
+    # Change the bar mode
+    fig.add_hline(y=0,line_width=1,line_color="#414141",opacity = 0.8)
+
+    # fig.add_hline(y=y_l.mean(),line_width=1.5, layer='below',line_color="#414141",opacity=0.8,annotation_text=f"   ({round(y_l.mean(),2)}) mean", annotation_position="right", line_dash="dot")
+    # fig.add_hline(y=y_v.mean(),line_width=1.5, layer='below', line_color="#FF9800",opacity=0.8,annotation_text=f"   ({round(y_v.mean(),2)}) mean", annotation_position="right", line_dash="dot")
+    fig.update_layout(barmode='group')
+
+    fig.update_layout(
+        title=dict(text=f'<b>{equipo_local.title()} vs {equipo_visitante.title()}</b><br><sup><i>{estadistico_a_mirar.title()}</i><sup>', font=dict(size=25,color="#414141"), x = 0.5, xanchor = 'center'),
+        plot_bgcolor='white',
+        xaxis_tickfont_size=13,
+        yaxis=dict(
+            title=estadistico_a_mirar.title(),
+            titlefont_size=14,
+            tickfont_size=12,
+        ),
+        xaxis=dict(
+            title='Equipo',
+            titlefont_size=14,
+            tickfont_size=12,
+            tickmode = 'array',
+            # tickvals =  ['sdsdsd','sdsds'],
+            # ticktext = ['sdsdsd','sdsds'],
+        ),
+        modebar_remove=['zoom', 'pan', 'select', 'zoomIn', 'zoomOut', 'autoScale', 'resetScale','lasso2d'],
+        barmode='group',
+        bargap=0.3, # gap between bars of adjacent location coordinates.
+        bargroupgap=0, # gap between bars of the same location coordinate.
+        showlegend = False,
+        margin=dict(r=20),
+    )
+    fig.update_xaxes(
+        mirror=True,
+        # ticks='outside',
+        showline=True,
+        gridcolor='lightgrey'
+    )
+    fig.update_yaxes(
+        mirror=True,
+        # ticks='outside',
+        showline=True,
+        gridcolor='lightgrey'
+    )
+
+    # fig.show()
+    return fig
