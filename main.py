@@ -8,7 +8,15 @@ import pickle
 # ------------------------
 
 
-
+def metricas_plot(dataset, stat_name:str, name_expander: str, name_metric: str, name_metric_2: str = ''):
+    with st.expander(name_expander):
+        stat_info = int(dataset[stat_name].sum())
+        stat_info_mean = round(dataset[stat_name].mean(),2)
+        st.metric(name_metric,f'{stat_info}', delta_color="normal" )
+        if name_metric_2:
+            st.metric(f'{name_metric_2} Promedio',f'{stat_info_mean}', delta_color="normal" )
+        else:
+            st.metric(f'{name_metric} Promedio',f'{stat_info_mean}', delta_color="normal" )
 
 _menu_items = {
         'Get Help': 'https://www.extremelycoolapp.com/help',
@@ -29,12 +37,12 @@ st.set_page_config(page_title='Football Stats', page_icon = '📊', layout="wide
 # ------------------------
 
 
-st.markdown("<h1 style='text-align: center;'>Hola Tutu, que ma'?</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>CERTEROS 🎯</h1>", unsafe_allow_html=True)
 
 st.write('---')
 menu_bar_selected = option_menu(None, ["All Matches", "H2H", 'Team Stats'], 
                                 icons=['graph-up-arrow', 'people-fill', 'person'], 
-                                menu_icon="cast", default_index=1, orientation="horizontal")
+                                menu_icon="cast", default_index=0, orientation="horizontal")
 st.write('---')
 
 a1,a2,a3 = st.columns((1,3,1))
@@ -144,3 +152,111 @@ if menu_bar_selected == 'H2H':
                         if stats_to_look:
                             h2h_fig = h2h_plot(local_team_choosed, away_team_choosed, equipo_local_filtred_df,equipo_visitante_filtred_df, stats_to_look.lower().replace(' ','_'))
                             st.plotly_chart(h2h_fig, use_container_width=True)
+                            
+f1,f2,f3 = st.columns((1,3,1))      
+if menu_bar_selected == 'Team Stats':
+    with f2:
+        liga_choosed = st.selectbox("Selecciona La Liga",sorted([i.title() for i in dict_ligas.keys()]),index=10,placeholder="Select contact method...")
+        liga_info_dict = pickle.load(open(f'./data/{liga_choosed.lower()}.pkl','rb'))
+        all_teams_names = get_all_team_names(liga_info_dict)
+        st.write('---')
+        if liga_choosed: # si la liga fue escogida
+            b1,b2 = st.columns(2)
+            team_choosed = st.selectbox('Selecciona Equipo:',[i.title() for i in all_teams_names], key = 'equipo_1', index=None, placeholder = 'equipo...')
+
+            if team_choosed:
+                
+                equipo_seleccionado_all_matches_df = get_all_matches_by_team(team_choosed.lower(),data_list=liga_info_dict)
+                equipo_seleccionado_all_matches_df_l = equipo_seleccionado_all_matches_df[equipo_seleccionado_all_matches_df['equipo'].str.endswith('L')]
+                equipo_seleccionado_all_matches_df_v = equipo_seleccionado_all_matches_df[equipo_seleccionado_all_matches_df['equipo'].str.endswith('V')]
+                st.divider()
+                col1,col2 = st.columns(2)
+                with col1:
+                    st.markdown("<h3 style='text-align: center; color:#414141;'>Local 🏠</h3>", unsafe_allow_html=True)
+                    st.write('---')
+                    partidos_ganados_l_list = equipo_seleccionado_all_matches_df_l[equipo_seleccionado_all_matches_df_l['resultado'] == 'gano'].to_dict(orient='records')
+                    partidos_perdidos_l_list = equipo_seleccionado_all_matches_df_l[equipo_seleccionado_all_matches_df_l['resultado'] == 'perdio'].to_dict(orient='records')
+                    partidos_empatados_l_list = equipo_seleccionado_all_matches_df_l[equipo_seleccionado_all_matches_df_l['resultado'] == 'empato'].to_dict(orient='records')
+                    
+                    with st.expander('Partidos Ganados'):
+                        if len(partidos_ganados_l_list) == 0:
+                            st.warning('No hay partidos de Local Ganados')
+                        else:
+                            for i in partidos_ganados_l_list:
+                                st.success(f"{i['equipo'].split('_')[0].title()} ({i['goles_anotados']}) - {i['equipo_contrario'].title()} ({i['goles_recibidos']})", icon='✅')
+                    with st.expander('Partidos Perdidos'):
+                        if len(partidos_perdidos_l_list) == 0:
+                            st.warning('No hay partidos de Local Perdidos')
+                        else:
+                            for i in partidos_perdidos_l_list:
+                                st.error(f"{i['equipo'].split('_')[0].title()} ({i['goles_anotados']}) - {i['equipo_contrario'].title()} ({i['goles_recibidos']})", icon='❌')
+                            
+                    with st.expander('Partidos Empatados'):
+                        if len(partidos_empatados_l_list) == 0:
+                            st.warning('No hay partidos de Local Empatados')
+                        else:
+                            for i in partidos_empatados_l_list:
+                                st.warning(f"{i['equipo'].split('_')[0].title()} ({i['goles_anotados']}) - {i['equipo_contrario'].title()} ({i['goles_recibidos']})", icon='🟠')
+                    st.divider()
+                    # with st.expander('Goles'):
+                    #     goles_anotados = equipo_seleccionado_all_matches_df_l['goles_anotados'].sum()
+                    #     goles_recibidos = equipo_seleccionado_all_matches_df_l['goles_recibidos'].sum()
+                    #     st.metric('Goles Anotados',f'{goles_anotados}',f'-{goles_recibidos} recibidos',delta_color="normal" )
+                    
+                    
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'goles_anotados', name_expander = 'Goles Anotados ⚽', name_metric = 'Total Goles Anotados', name_metric_2 = 'Goles Anotados')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'goles_recibidos', name_expander = 'Goles Recibidos ⚽', name_metric = 'Total Goles Recibidos', name_metric_2 = 'Goles Recibidos')
+                    # st.divider()
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'corneres', name_expander = 'Corners ⛳', name_metric = 'Total Corners', name_metric_2 = 'Corners')
+                    # st.divider()
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'goles_esperados', name_expander = 'Goles Esperados 🔮', name_metric = 'Goles Esperados', name_metric_2 = '')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'remates_a_puerta', name_expander = 'Remates a Puerta 🔫', name_metric = 'Total Remates', name_metric_2 = 'Remates')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'tiros_libres', name_expander = 'Tiros Libres 🥅', name_metric = 'Total Tiros Libres', name_metric_2 = 'Tiros Libres')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'fueras_de_juego', name_expander = 'Fueras de Juego 🗣️', name_metric = 'Total Fueras de Juego', name_metric_2 = 'Fueras de Juego')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'faltas', name_expander = 'Faltas 🚫', name_metric = 'Total Faltas', name_metric_2 = 'Faltas')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'tarjetas_rojas', name_expander = 'Tarjetas Rojas 🟥', name_metric = 'Total Tarjetas Rojas', name_metric_2 = 'Tarjetas Rojas')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_l, stat_name = 'tarjetas_amarillas', name_expander = 'Tarjetas Amarillas 🟨', name_metric = 'Total Tarjetas Amarillas', name_metric_2 = 'Tarjetas Amarillas')
+                    st.divider()
+
+                    
+                with col2:
+                    st.markdown("<h3 style='text-align: center; color:#414141;'>Visitante ⚠️</h3>", unsafe_allow_html=True)
+                    st.write('---')
+                    partidos_ganados_v_list = equipo_seleccionado_all_matches_df_v[equipo_seleccionado_all_matches_df_v['resultado'] == 'gano'].to_dict(orient='records')
+                    partidos_perdidos_v_list = equipo_seleccionado_all_matches_df_v[equipo_seleccionado_all_matches_df_v['resultado'] == 'perdio'].to_dict(orient='records')
+                    partidos_empatados_v_list = equipo_seleccionado_all_matches_df_v[equipo_seleccionado_all_matches_df_v['resultado'] == 'empato'].to_dict(orient='records')
+                    
+                    with st.expander('Partidos Ganados'):
+                        if len(partidos_ganados_v_list) == 0:
+                            st.warning('No hay partidos de Visitante Ganados')
+                        else:
+                            for i in partidos_ganados_v_list:
+                                st.success(f"{i['equipo'].split('_')[0].title()} ({i['goles_anotados']}) - {i['equipo_contrario'].title()} ({i['goles_recibidos']})", icon='✅')
+                    with st.expander('Partidos Perdidos'):
+                        if len(partidos_perdidos_v_list) == 0:
+                            st.warning('No hay partidos de Visitante Perdidos')
+                        else:
+                            for i in partidos_perdidos_v_list:
+                                st.error(f"{i['equipo'].split('_')[0].title()} ({i['goles_anotados']}) - {i['equipo_contrario'].title()} ({i['goles_recibidos']})", icon='❌')
+                            
+                    with st.expander('Partidos Empatados'):
+                        if len(partidos_empatados_l_list) == 0:
+                            st.warning('No hay partidos de Visitante Empatados')
+                        else:
+                            for i in partidos_empatados_v_list:
+                                st.warning(f"{i['equipo'].split('_')[0].title()} ({i['goles_anotados']}) - {i['equipo_contrario'].title()} ({i['goles_recibidos']})", icon='🟠')
+                    st.divider()            
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'goles_anotados', name_expander = 'Goles Anotados ⚽', name_metric = 'Total Goles Anotados', name_metric_2 = 'Goles Anotados')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'goles_recibidos', name_expander = 'Goles Recibidos ⚽', name_metric = 'Total Goles Recibidos', name_metric_2 = 'Goles Recibidos')
+                    # st.divider()
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'corneres', name_expander = 'Corners ⛳', name_metric = 'Total Corners', name_metric_2 = 'Corners')
+                    # st.divider()
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'goles_esperados', name_expander = 'Goles Esperados 🔮', name_metric = 'Goles Esperados', name_metric_2 = '')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'remates_a_puerta', name_expander = 'Remates a Puerta 🔫', name_metric = 'Total Remates', name_metric_2 = 'Remates')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'tiros_libres', name_expander = 'Tiros Libres 🥅', name_metric = 'Total Tiros Libres', name_metric_2 = 'Tiros Libres')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'fueras_de_juego', name_expander = 'Fueras de Juego 🗣️', name_metric = 'Total Fueras de Juego', name_metric_2 = 'Fueras de Juego')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'faltas', name_expander = 'Faltas 🚫', name_metric = 'Total Faltas', name_metric_2 = 'Faltas')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'tarjetas_rojas', name_expander = 'Tarjetas Rojas 🟥', name_metric = 'Total Tarjetas Rojas', name_metric_2 = 'Tarjetas Rojas')
+                    metricas_plot(dataset = equipo_seleccionado_all_matches_df_v, stat_name = 'tarjetas_amarillas', name_expander = 'Tarjetas Amarillas 🟨', name_metric = 'Total Tarjetas Amarillas', name_metric_2 = 'Tarjetas Amarillas')
+                    st.divider()
+            

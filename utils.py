@@ -12,7 +12,13 @@ def get_all_team_names(data_list):
                 listado_equipos.append(k.split('_')[0])
                 
     return sorted(list(set(listado_equipos)))
-
+def gana_pierde_empate(x):
+    if x >0:
+        return 'gano'
+    elif x<0:
+        return 'perdio'
+    else:
+        return 'empato'
 # get all matches for team given
 def get_all_matches_by_team(busqueda, data_list):
     estadisticas_buscadas = []
@@ -44,6 +50,16 @@ def get_all_matches_by_team(busqueda, data_list):
             stats_df[i] = stats_df[i].apply(lambda x: int(x))
         except:
             pass
+        
+    try:
+        stats_df['posesion_de_balon'] = stats_df['posesion_de_balon'].apply(lambda x: int(x.replace('%','')))
+    except:
+        pass
+    
+    stats_df['resultado'] = stats_df['goles_anotados'] - stats_df['goles_recibidos']
+    stats_df['resultado'] = stats_df['resultado'].apply(lambda x: gana_pierde_empate(x))
+
+
     
     return stats_df
 
