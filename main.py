@@ -72,9 +72,9 @@ with a2:
     with auth:
         auth.subheader('Login 🔐')
         auth.write(' ')
-        user_input = auth.text_input('Username')
+        user_input = auth.text_input('Username').lower()
         auth.write(' ')
-        password_input = auth.text_input('Password',type='password', max_chars=15)
+        password_input = auth.text_input('Password',type='password', max_chars=15).lower()
         auth.write(' ')
         submit = auth.form_submit_button('Login',type = 'primary')
         
