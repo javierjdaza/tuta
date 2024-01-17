@@ -75,20 +75,21 @@ def all_matches_plot(estadistico_a_mirar:str, equipo_1_df, equipo_2_df, equipo_1
     x_v = equipo_2_df['jornada'] # eje y, equipo 2
 
     fig = go.Figure(data=[
-        go.Bar(name=equipo_1_name.title(), x=x_l, y=y_l,marker_color = ['#414141'] * len(x_l)),
-        go.Bar(name=equipo_2_name.title(), x=x_v, y=y_v,marker_color = ['#FF9800'] * len(x_v)),
+        go.Bar(name=equipo_1_name.title(), x=x_l, y=y_l,marker_color = ['#9AE66E'] * len(x_l)),
+        go.Bar(name=equipo_2_name.title(), x=x_v, y=y_v,marker_color = ['#FF6868'] * len(x_v)),
         
     ])
     # Change the bar mode
-    fig.add_hline(y=0,line_width=1,line_color="#414141",opacity = 0.8)
+    fig.add_hline(y=0,line_width=1,line_color="#FFFFFF",opacity = 0.8)
 
-    fig.add_hline(y=y_l.mean(),line_width=1.5, layer='below',line_color="#414141",opacity=0.8,annotation_text=f"    ({round(y_l.mean(),2)})", annotation_position="right", line_dash="dot")
-    fig.add_hline(y=y_v.mean(),line_width=1.5, layer='below', line_color="#FF9800",opacity=1,annotation_text=f"    ({round(y_v.mean(),2)})", annotation_position="right", line_dash="dot")
+    fig.add_hline(y=y_l.mean(),line_width=1.5, layer='below',line_color="#9AE66E",opacity=0.8,annotation_text=f"    ({round(y_l.mean(),2)})", annotation_position="right", line_dash="dot")
+    fig.add_hline(y=y_v.mean(),line_width=1.5, layer='below', line_color="#FF6868",opacity=1,annotation_text=f"    ({round(y_v.mean(),2)})", annotation_position="right", line_dash="dot")
     fig.update_layout(barmode='group')
 
     fig.update_layout(
-        title=dict(text=f'<b>{equipo_1_name.title()} vs {equipo_2_name.title()}</b><br><sup><i>{estadistico_a_mirar.title()}</i><sup>', font=dict(size=25,color="#414141"), x = 0.5, xanchor = 'center'),
-        plot_bgcolor='white',
+        title=dict(text=f'<b>{equipo_1_name.title()} vs {equipo_2_name.title()}</b><br><sup><i>{estadistico_a_mirar.title()}</i><sup>', font=dict(size=25,color="#FFFFFF"), x = 0.5, xanchor = 'center'),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor = 'rgba(0,0,0,0)',
         xaxis_tickfont_size=13,
         yaxis=dict(
             title=estadistico_a_mirar.title(),
@@ -114,7 +115,8 @@ def all_matches_plot(estadistico_a_mirar:str, equipo_1_df, equipo_2_df, equipo_1
         modebar_remove=['zoom', 'pan', 'select', 'zoomIn', 'zoomOut', 'autoScale', 'lasso2d'],
         barmode='group',
         bargap=0.3, # gap between bars of adjacent location coordinates.
-        bargroupgap=0 # gap between bars of the same location coordinate.
+        bargroupgap=0, # gap between bars of the same location coordinate.
+
     )
     fig.update_xaxes(
         mirror=True,
@@ -140,20 +142,21 @@ def h2h_plot(equipo_local, equipo_visitante, equipo_local_df,equipo_visitante_df
     x_v = [i.split('_')[0].title() for i in equipo_visitante_df['equipo']]
 
     fig = go.Figure(data=[
-        go.Bar(name=equipo_local.title(), x=x_l, y=y_l,marker_color = ['#414141'] * len(x_l)),
-        go.Bar(name=equipo_visitante.title(), x=x_v, y=y_v,marker_color = ['#FF9800'] * len(x_l)),
+        go.Bar(name=equipo_local.title(), x=x_l, y=y_l,marker_color = ['#9AE66E'] * len(x_l)),
+        go.Bar(name=equipo_visitante.title(), x=x_v, y=y_v,marker_color = ['#FF6868'] * len(x_l)),
         
     ])
     # Change the bar mode
     fig.add_hline(y=0,line_width=1,line_color="#414141",opacity = 0.8)
 
-    # fig.add_hline(y=y_l.mean(),line_width=1.5, layer='below',line_color="#414141",opacity=0.8,annotation_text=f"   ({round(y_l.mean(),2)}) mean", annotation_position="right", line_dash="dot")
-    # fig.add_hline(y=y_v.mean(),line_width=1.5, layer='below', line_color="#FF9800",opacity=0.8,annotation_text=f"   ({round(y_v.mean(),2)}) mean", annotation_position="right", line_dash="dot")
+    # fig.add_hline(y=y_l.mean(),line_width=1.5, layer='below',line_color="#9AE66E",opacity=0.8,annotation_text=f"   ({round(y_l.mean(),2)}) mean", annotation_position="right", line_dash="dot")
+    # fig.add_hline(y=y_v.mean(),line_width=1.5, layer='below', line_color="#FF6868",opacity=0.8,annotation_text=f"   ({round(y_v.mean(),2)}) mean", annotation_position="right", line_dash="dot")
     fig.update_layout(barmode='group')
 
     fig.update_layout(
-        title=dict(text=f'<b>{equipo_local.title()} vs {equipo_visitante.title()}</b><br><sup><i>{estadistico_a_mirar.title()}</i><sup>', font=dict(size=25,color="#414141"), x = 0.5, xanchor = 'center'),
-        plot_bgcolor='white',
+        title=dict(text=f'<b>{equipo_local.title()} vs {equipo_visitante.title()}</b><br><sup><i>{estadistico_a_mirar.title()}</i><sup>', font=dict(size=25,color="#FFFFFF"), x = 0.5, xanchor = 'center'),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor = 'rgba(0,0,0,0)',
         xaxis_tickfont_size=13,
         yaxis=dict(
             title=estadistico_a_mirar.title(),

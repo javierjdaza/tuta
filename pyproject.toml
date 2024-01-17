@@ -18,6 +18,8 @@ matplotlib = "^3.8.2"
 plotly = "^5.18.0"
 nbformat = "^5.9.2"
 streamlit-option-menu = "^0.3.6"
+supabase = "^2.3.4"
+python-dotenv = "^1.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
