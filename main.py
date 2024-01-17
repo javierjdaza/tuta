@@ -159,9 +159,9 @@ if st.session_state['auth_']:
                                 st.markdown("<p style='text-align: center; color:#9AE66E; font-size:14px;'>**Linea punteada indica el promedio de la estadistica 🔍</p>", unsafe_allow_html=True)
                         
                         
-    h1,h2,h3 = st.columns((1,3,1))      
+    # h1,h2,h3 = st.columns((1,3,1))      
     if menu_bar_selected == 'H2H':
-        with h2:
+        with a2:
             liga_choosed = st.selectbox("Selecciona La Liga",sorted([i.title() for i in dict_ligas.keys()]),index=10,placeholder="Select contact method...")
             liga_info_dict = pickle.load(open(f'./data/{liga_choosed.lower()}.pkl','rb'))
             all_teams_names = get_all_team_names(liga_info_dict)
@@ -210,9 +210,9 @@ if st.session_state['auth_']:
                                 h2h_fig = h2h_plot(local_team_choosed, away_team_choosed, equipo_local_filtred_df,equipo_visitante_filtred_df, stats_to_look.lower().replace(' ','_'))
                                 st.plotly_chart(h2h_fig, use_container_width=True)
                                 
-    f1,f2,f3 = st.columns((1,3,1))      
+    # f1,f2,f3 = st.columns((1,3,1))      
     if menu_bar_selected == 'Team Stats':
-        with f2:
+        with a2:
             liga_choosed = st.selectbox("Selecciona La Liga",sorted([i.title() for i in dict_ligas.keys()]),index=10,placeholder="Select contact method...")
             liga_info_dict = pickle.load(open(f'./data/{liga_choosed.lower()}.pkl','rb'))
             all_teams_names = get_all_team_names(liga_info_dict)
