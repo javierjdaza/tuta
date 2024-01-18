@@ -12,13 +12,14 @@ import time
 
 def metricas_plot(dataset, stat_name:str, name_expander: str, name_metric: str, name_metric_2: str = ''):
     with st.expander(name_expander):
-        stat_info = int(dataset[stat_name].sum())
-        stat_info_mean = round(dataset[stat_name].mean(),2)
-        st.metric(name_metric,f'{stat_info}', delta_color="normal" )
-        if name_metric_2:
-            st.metric(f'{name_metric_2} Promedio',f'{stat_info_mean}', delta_color="normal" )
-        else:
-            st.metric(f'{name_metric} Promedio',f'{stat_info_mean}', delta_color="normal" )
+        if len(dataset) != 0:
+            stat_info = int(dataset[stat_name].sum())
+            stat_info_mean = round(dataset[stat_name].mean(),2)
+            st.metric(name_metric,f'{stat_info}', delta_color="normal" )
+            if name_metric_2:
+                st.metric(f'{name_metric_2} Promedio',f'{stat_info_mean}', delta_color="normal" )
+            else:
+                st.metric(f'{name_metric} Promedio',f'{stat_info_mean}', delta_color="normal" )
 
 _menu_items = {
         'Get Help': 'https://www.extremelycoolapp.com/help',
