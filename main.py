@@ -63,40 +63,40 @@ def authentication(username: str, password: str):
     
 
 
-a1,a2,a3 = st.columns(3)
-with a2:
+# a1,a2,a3 = st.columns(3)
+# with a2:
     
 
-    placeholder = st.empty()
-    auth = placeholder.form('auth')
+#     placeholder = st.empty()
+#     auth = placeholder.form('auth')
     
-    with auth:
-        auth.subheader('Login 🔐')
-        auth.write(' ')
-        user_input = auth.text_input('Username').lower()
-        auth.write(' ')
-        password_input = auth.text_input('Password',type='password', max_chars=15).lower()
-        auth.write(' ')
-        submit = auth.form_submit_button('Login',type = 'primary')
+#     with auth:
+#         auth.subheader('Login 🔐')
+#         auth.write(' ')
+#         user_input = auth.text_input('Username').lower()
+#         auth.write(' ')
+#         password_input = auth.text_input('Password',type='password', max_chars=15).lower()
+#         auth.write(' ')
+#         submit = auth.form_submit_button('Login',type = 'primary')
         
         
 
-if submit:
-    flag_auth,name,last_name,created_at = authentication(user_input,password_input)
-    f1,f2,f3 = st.columns(3)
-    if flag_auth:
-        st.session_state['auth_'] = True
-        st.session_state['name'] = name
-        st.session_state['last_name'] = last_name
-        st.session_state['created_at'] = created_at
+# if submit:
+#     flag_auth,name,last_name,created_at = authentication(user_input,password_input)
+#     f1,f2,f3 = st.columns(3)
+#     if flag_auth:
+#         st.session_state['auth_'] = True
+#         st.session_state['name'] = name
+#         st.session_state['last_name'] = last_name
+#         st.session_state['created_at'] = created_at
         
-    else:
-        with f2:
-            st.error('Revisa Tus credenciales', icon = '💀')
+#     else:
+#         with f2:
+#             st.error('Revisa Tus credenciales', icon = '💀')
         
-if st.session_state['auth_']:
-    placeholder.empty()
-    place_holder_2.empty()
+if True:
+    # placeholder.empty()
+    # place_holder_2.empty()
     st.write('---')
     menu_bar_selected = option_menu(None, ["All Matches", "H2H", 'Team Stats'], 
                                     icons=['graph-up-arrow', 'people-fill', 'person'], 
